@@ -11,6 +11,10 @@ let userlist= [];
 let cUser;
 
 let YourName = prompt('Enter Your Name');
+db.collection('rate').doc(ROOM_ID).set({
+  name: YourName,
+  rate : ROOM_ID
+})
 // let bar = confirm('Confirm or deny');
 console.log(YourName);
 
@@ -30,7 +34,7 @@ navigator.mediaDevices.getUserMedia({     //by using this we can access user dev
 
     peer.on('call', call =>{               //here user system answer call and send there video stream to us
     	var acceptsCall = confirm("Videocall incoming");
-
+      
       if(acceptsCall){
           console.log("answered");        
     	    call.answer(stream);               //via this send video stream to caller
@@ -159,6 +163,15 @@ const disconnectNow = ()=>{
   window.location = "./thankYou.html";   
 }
 
+//code for world chat history
+const WorldChat=()=>{
+  window.location= "./worldChat.html";
+}
+
+const RoomChat=()=>{
+  window.location= "./RoomChat.html";
+}
+
 //code to share url of roomId
 const share =() =>{
   var share = document.createElement('input'),
@@ -175,13 +188,24 @@ const share =() =>{
  //msg sen from user
 let text = $('input');
 
+
+
 $('html').keydown((e) =>{
   if(e.which == 13 && text.val().length !== 0){
     console.log(text.val());
     socket.emit('message', text.val(),YourName);
     db.collection('chat').add({
+      name:YourName,
+      message:text.val(),
+      id:ROOM_ID,
+      time:firebase.firestore.Timestamp.now()
+    })
+    db.collection('rate')
+    .doc(ROOM_ID)
+    .collection('specific msg')
+    .add({
       name: YourName,
-      message: text.val()
+      rate:text.val()
     })
     text.val('')
   }
@@ -189,11 +213,11 @@ $('html').keydown((e) =>{
 
 
 //data from firebase of a particular room ID
-db.collection('chat').get().then((snapshot)=>{
-  snapshot.docs.forEach(doc => {
-    console.log(doc.data())
-  });
-})
+// db.collection('chat').get().then((snapshot)=>{
+//   snapshot.docs.forEach(doc => {
+//     console.log(doc.data())
+//   });
+// })
 
 
 //Print msg in room
@@ -208,6 +232,17 @@ const scrollToBottom = () =>{
   var d = $('.main__chat_window');
   d.scrollTop(d.prop("scrollHeight"));
 }
+
+
+
+// getting data
+db.collection('cafes').get().then(snapshot => {
+    snapshot.docs.forEach(doc => {
+        renderCafe(doc);
+    });
+});
+
+
 
 //screenShare
 const screenshare = () =>{
@@ -290,7 +325,7 @@ const listOfUser = ()=>{
   }
   for (var i = 0; i < userlist.length; i++) {
     var x = document.createElement("a");
-    var t = document.createTextNode(`VideoSector ${i+1}`); 
+    var t = document.createTextNode(`participant ${i+1}`); 
     x.appendChild(t);
     userDropDown.append(x);
   }

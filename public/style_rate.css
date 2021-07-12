@@ -3,7 +3,9 @@
     padding: 0;
 }
 .rate {
-    float: center;
+    height: 10em;
+    position: relative
+
 }
 
 .rate:not(:checked) > input {
@@ -35,4 +37,20 @@
 .rate > input:checked ~ label:hover ~ label,
 .rate > label:hover ~ input:checked ~ label {
     color: #c59b08;
+}
+.rate-content{
+    margin-left: 0%;
+    margin-right: 45%;
+}
+#footer{
+    background-color: #f7efef;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    position:fixed;
+    bottom:0;
+    margin-left: 0%;
+    width:100%;
+}
+#copy-right{
+    text-align: center;
 }

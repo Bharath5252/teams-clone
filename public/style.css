@@ -3,15 +3,21 @@ body{
 	padding: 0;
 }
 #video-grid {
-		display: flex;
+		display: flexbox;
 		justify-content: center;
-
+        
 	}
 
 video{
-		 height: 300px;
+		 height: 320px;
          width: 400px;
          object-fit: cover;
+         display: inline;
+         @media (min-width:800px) {
+             flex-direction : column;
+         }
+         overflow-x: hidden;
+         overflow-y: scroll;
        }
 
 .main{
@@ -34,9 +40,11 @@ video{
     justify-content: center;
     align-items: center;
     overflow: hidden;
+    overflow-y: scroll;
 }
 
 .main__controls{
+    height:min-content;
 	display: flex;
     background-color: #1C1E20;
     color: #D2D2D2;
